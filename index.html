@@ -3,294 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICT Quiz: History of Computers</title>
+    <title>Mr. Katongo's Quiz Architect</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #fef2f2; /* Light red/rose tint */
-            overflow-x: hidden;
-        }
-        .container-box { max-width: 800px; }
-        .option-btn { transition: all 0.15s ease-in-out; cursor: pointer; }
-        .option-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .selected { border-color: #e11d48; background-color: #fff1f2; }
-
-        @keyframes scrollText {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        .scrolling-container {
-            width: 100%; overflow: hidden; background: #be123c; color: white;
-            padding: 8px 0; white-space: nowrap; position: fixed; top: 0; left: 0; z-index: 50;
-        }
-        .scrolling-text {
-            display: inline-block; font-weight: 800; text-transform: uppercase;
-            animation: scrollText 20s linear infinite;
-        }
-
-        @keyframes rotateTitle {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .rotating-section { display: flex; justify-content: center; margin-top: 2.5rem; margin-bottom: 2rem; }
-        .rotating-text {
-            display: inline-block; animation: rotateTitle 15s linear infinite;
-            transform-origin: center;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .config-card { background: white; border-radius: 1rem; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
     </style>
 </head>
-<body class="p-4 pt-16 md:p-8 md:pt-20 flex justify-center min-h-screen">
+<body class="p-4 md:p-10">
 
-    <div class="scrolling-container">
-        <div class="scrolling-text">
-            History of Computers Quiz • Prepared By Mr. Katongo • From Vacuum Tubes to AI • 
-        </div>
-    </div>
-
-    <div class="container-box w-full">
-        <header class="text-center mb-8">
-            <h1 class="text-4xl font-extrabold text-rose-700 mb-2">History of Computers Quiz</h1>
-            <p class="text-gray-600 font-medium">Explore the evolution of computing through the generations!</p>
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-indigo-800">Quiz Architect</h1>
+            <p class="text-slate-600">Create custom ICT quizzes in the "Mr. Katongo" style instantly.</p>
         </header>
 
-        <div id="userInput" class="bg-white p-6 md:p-10 rounded-xl shadow-2xl border border-rose-100 mb-6">
-            <h2 class="text-2xl font-bold text-rose-600 mb-4">Learner Identity</h2>
-            <div class="space-y-4">
-                <input type="text" id="learnerName" placeholder="Full Name" class="block w-full border border-gray-300 rounded-md p-2">
-                <input type="text" id="learnerId" placeholder="Student ID" class="block w-full border border-gray-300 rounded-md p-2">
-            </div>
-            <button id="startQuizButton" class="w-full mt-6 bg-rose-600 text-white font-semibold py-3 rounded-xl hover:bg-rose-700 disabled:opacity-50" disabled>Start History Quiz</button>
-        </div>
-        
-        <div id="timerDisplay" class="text-right text-xl font-bold text-gray-700 mb-4 hidden">
-            Timer: <span id="timeElapsed" class="text-rose-600">00:00</span>
-        </div>
-        
-        <div id="quizContainer" class="bg-white p-6 md:p-10 rounded-xl shadow-2xl border border-rose-100 hidden">
-            <div id="questionView">
-                <p id="progress" class="text-sm font-semibold text-rose-500 mb-3"></p>
-                <div class="mb-6 p-4 bg-rose-50 border-l-4 border-rose-500 rounded-lg">
-                    <h2 id="questionText" class="text-xl font-bold text-gray-800"></h2>
+        <div class="config-card p-6 md:p-8">
+            <div class="grid grid-cols-1 gap-6">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Quiz Topic</label>
+                    <input type="text" id="topicInput" placeholder="e.g. Computer Storage Devices" 
+                           class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
-                <div id="optionsContainer" class="space-y-4 mb-8"></div>
-                <div class="flex justify-between items-center">
-                    <p id="hintText" class="text-sm text-gray-500 italic"></p>
-                    <button id="nextButton" class="bg-rose-600 text-white font-semibold py-3 px-8 rounded-full disabled:opacity-50" disabled>Next</button>
-                </div>
-            </div>
 
-            <div id="resultsView" class="hidden">
-                <h2 class="text-3xl font-bold text-center text-rose-700 mb-4">Quiz Summary</h2>
-                <div id="scoreBox" class="text-center mb-8 p-6 bg-rose-50 rounded-lg border border-rose-200">
-                    <p class="text-5xl font-extrabold text-rose-600 my-2"><span id="finalScore"></span> / 10</p>
-                    <p class="text-2xl font-bold text-gray-700">Result: <span id="finalPercentage"></span>%</p>
-                    <p id="passStatus" class="mt-2 font-bold text-xl uppercase"></p>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Primary Color Theme</label>
+                    <select id="colorTheme" class="w-full p-3 border border-slate-300 rounded-lg">
+                        <option value="indigo">Indigo (Default)</option>
+                        <option value="emerald">Emerald Green (Input/Output)</option>
+                        <option value="rose">Rose Red (History)</option>
+                        <option value="amber">Amber Gold (Storage)</option>
+                        <option value="sky">Sky Blue (Software)</option>
+                    </select>
                 </div>
-                <h3 class="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Correction Guide</h3>
-                <div id="reviewContainer" class="space-y-4"></div>
-                <button id="restartButton" class="w-full mt-10 bg-rose-800 text-white font-semibold py-3 rounded-xl">Restart Quiz</button>
+
+                <div id="questionsList" class="space-y-4">
+                    <h3 class="font-bold text-slate-800 border-b pb-2">Questions</h3>
+                    </div>
+
+                <button onclick="addQuestion()" class="text-indigo-600 font-semibold hover:text-indigo-800 transition">+ Add New Question</button>
+
+                <hr class="my-4">
+
+                <button onclick="generateQuizCode()" class="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition">
+                    BUILD & DOWNLOAD QUIZ FILE
+                </button>
             </div>
         </div>
-
-        <footer class="rotating-section">
-            <div class="rotating-text text-lg font-bold text-rose-600 bg-white px-6 py-3 rounded-full shadow-md border border-rose-100">
-                Prepared By Mr. Katongo
-            </div>
-        </footer>
     </div>
 
     <script>
-        const QUIZ_QUESTIONS = [
-            {
-                question: "Which component was used in the first generation of computers (1940-1956)?",
-                hint: "They were made of glass and produced massive amounts of heat.",
-                answerOptions: [
-                    { text: "Transistors", isCorrect: false },
-                    { text: "Vacuum Tubes", isCorrect: true },
-                    { text: "Microprocessors", isCorrect: false },
-                    { text: "Integrated Circuits", isCorrect: false }
-                ]
-            },
-            {
-                question: "The second generation of computers replaced vacuum tubes with:",
-                hint: "This invention made computers smaller, faster, and cheaper.",
-                answerOptions: [
-                    { text: "Transistors", isCorrect: true },
-                    { text: "Silicon Chips", isCorrect: false },
-                    { text: "Punched Cards", isCorrect: false },
-                    { text: "Artificial Intelligence", isCorrect: false }
-                ]
-            },
-            {
-                question: "Which generation introduced the Integrated Circuit (IC)?",
-                hint: "This era saw the first use of keyboards and monitors.",
-                answerOptions: [
-                    { text: "1st Generation", isCorrect: false },
-                    { text: "2nd Generation", isCorrect: false },
-                    { text: "3rd Generation", isCorrect: true },
-                    { text: "4th Generation", isCorrect: false }
-                ]
-            },
-            {
-                question: "Microprocessors were the hallmark of which computer generation?",
-                hint: "This led to the creation of the Personal Computer (PC).",
-                answerOptions: [
-                    { text: "3rd Generation", isCorrect: false },
-                    { text: "4th Generation", isCorrect: true },
-                    { text: "5th Generation", isCorrect: false },
-                    { text: "6th Generation", isCorrect: false }
-                ]
-            },
-            {
-                question: "The 5th generation of computers is primarily focused on:",
-                hint: "Think about machines that can learn and solve problems like humans.",
-                answerOptions: [
-                    { text: "Magnetic Drums", isCorrect: false },
-                    { text: "Transistors", isCorrect: false },
-                    { text: "Artificial Intelligence", isCorrect: true },
-                    { text: "Vacuum Tubes", isCorrect: false }
-                ]
-            },
-            {
-                question: "Which early computer was used during WWII to crack codes and occupied an entire room?",
-                hint: "It used thousands of vacuum tubes and was named ENIAC.",
-                answerOptions: [
-                    { text: "Apple I", isCorrect: false },
-                    { text: "ENIAC", isCorrect: true },
-                    { text: "IBM PC", isCorrect: false },
-                    { text: "Altair 8800", isCorrect: false }
-                ]
-            },
-            {
-                question: "Before monitors and keyboards, how did 1st generation users provide input?",
-                hint: "Information was stored as holes in stiff paper.",
-                answerOptions: [
-                    { text: "Mouse", isCorrect: false },
-                    { text: "Punched Cards", isCorrect: true },
-                    { text: "Touchscreens", isCorrect: false },
-                    { text: "Voice Commands", isCorrect: false }
-                ]
-            },
-            {
-                question: "Who is often called the 'Father of Computers' for designing the Analytical Engine?",
-                hint: "He was an English mathematician from the 19th century.",
-                answerOptions: [
-                    { text: "Charles Babbage", isCorrect: true },
-                    { text: "Bill Gates", isCorrect: false },
-                    { text: "Steve Jobs", isCorrect: false },
-                    { text: "Alan Turing", isCorrect: false }
-                ]
-            },
-            {
-                question: "What does VLSI stand for in the context of the 4th generation?",
-                hint: "It refers to putting thousands of transistors on a single chip.",
-                answerOptions: [
-                    { text: "Very Large Scale Integration", isCorrect: true },
-                    { text: "Visual Logical System Input", isCorrect: false },
-                    { text: "Volume Level System Interface", isCorrect: false },
-                    { text: "Virtual Link Storage Index", isCorrect: false }
-                ]
-            },
-            {
-                question: "Which generation made it possible for computers to be small enough to fit on a desk or in a hand?",
-                hint: "The era of the microprocessor.",
-                answerOptions: [
-                    { text: "1st Generation", isCorrect: false },
-                    { text: "2nd Generation", isCorrect: false },
-                    { text: "4th Generation", isCorrect: true },
-                    { text: "5th Generation", isCorrect: false }
-                ]
-            }
-        ];
+        let questionCount = 0;
 
-        let questions = [], currentIdx = 0, score = 0, responses = [];
-        let startTime, timerInt;
-
-        const nameIn = document.getElementById('learnerName'), idIn = document.getElementById('learnerId');
-        const startBtn = document.getElementById('startQuizButton');
-
-        function toggleBtn() { startBtn.disabled = !(nameIn.value.trim() && idIn.value.trim()); }
-        nameIn.oninput = toggleBtn; idIn.oninput = toggleBtn;
-
-        function startTimer() {
-            startTime = Date.now();
-            timerInt = setInterval(() => {
-                const elapsed = Math.floor((Date.now() - startTime) / 1000);
-                const m = Math.floor(elapsed / 60).toString().padStart(2, '0');
-                const s = (elapsed % 60).toString().padStart(2, '0');
-                document.getElementById('timeElapsed').textContent = `${m}:${s}`;
-            }, 1000);
+        function addQuestion() {
+            questionCount++;
+            const div = document.createElement('div');
+            div.className = "p-4 bg-slate-50 rounded-lg border border-slate-200 relative";
+            div.id = `q-block-${questionCount}`;
+            div.innerHTML = `
+                <button onclick="this.parentElement.remove()" class="absolute top-2 right-2 text-red-500 text-sm">Remove</button>
+                <input type="text" placeholder="Enter Question ${questionCount}" class="q-text w-full p-2 mb-2 border rounded">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" placeholder="Correct Answer" class="q-correct w-full p-2 border rounded bg-green-50">
+                    <input type="text" placeholder="Wrong Option 1" class="q-wrong w-full p-2 border rounded">
+                    <input type="text" placeholder="Wrong Option 2" class="q-wrong w-full p-2 border rounded">
+                    <input type="text" placeholder="Wrong Option 3" class="q-wrong w-full p-2 border rounded">
+                </div>
+                <input type="text" placeholder="Hint" class="q-hint w-full p-2 mt-2 border rounded italic text-sm">
+            `;
+            document.getElementById('questionsList').appendChild(div);
         }
 
-        startBtn.onclick = () => {
-            document.getElementById('userInput').classList.add('hidden');
-            document.getElementById('quizContainer').classList.remove('hidden');
-            document.getElementById('timerDisplay').classList.remove('hidden');
-            questions = [...QUIZ_QUESTIONS].sort(() => Math.random() - 0.5);
-            startTimer();
-            showQ();
-        };
-
-        function showQ() {
-            const q = questions[currentIdx];
-            document.getElementById('nextButton').disabled = true;
-            document.getElementById('progress').textContent = `Question ${currentIdx + 1} of 10`;
-            document.getElementById('questionText').textContent = q.question;
-            document.getElementById('hintText').textContent = `Hint: ${q.hint}`;
+        function generateQuizCode() {
+            const topic = document.getElementById('topicInput').value || "ICT Quiz";
+            const theme = document.getElementById('colorTheme').value;
+            const blocks = document.querySelectorAll('[id^="q-block-"]');
             
-            const cont = document.getElementById('optionsContainer');
-            cont.innerHTML = '';
-            q.answerOptions.forEach((opt, i) => {
-                const b = document.createElement('div');
-                b.className = 'option-btn p-4 bg-white border-2 rounded-lg';
-                b.textContent = opt.text;
-                b.onclick = () => {
-                    Array.from(cont.children).forEach(c => c.classList.remove('selected'));
-                    b.classList.add('selected');
-                    b.dataset.idx = i;
-                    document.getElementById('nextButton').disabled = false;
+            const questionsArray = Array.from(blocks).map(block => {
+                const correct = block.querySelector('.q-correct').value;
+                const wrongs = Array.from(block.querySelectorAll('.q-wrong')).map(i => i.value);
+                const options = [
+                    { text: correct, isCorrect: true, rationale: "Correct choice." },
+                    ...wrongs.map(w => ({ text: w, isCorrect: false, rationale: "Incorrect choice." }))
+                ].sort(() => Math.random() - 0.5);
+
+                return {
+                    question: block.querySelector('.q-text').value,
+                    hint: block.querySelector('.q-hint').value,
+                    answerOptions: options
                 };
-                cont.appendChild(b);
+            });
+
+            const fullHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${topic}</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <style>
+        @keyframes scrollText { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .scrolling-container { width: 100%; overflow: hidden; background: ${theme === 'indigo' ? '#4f46e5' : theme}; color: white; padding: 8px 0; position: fixed; top: 0; z-index: 50; white-space: nowrap; }
+        .scrolling-text { display: inline-block; animation: scrollText 15s linear infinite; font-weight: 800; }
+        @keyframes rotateTitle { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .rotating-text { display: inline-block; animation: rotateTitle 15s linear infinite; transform-origin: center; }
+        .selected { border-color: #4f46e5; background-color: #f5f3ff; }
+    </style>
+</head>
+<body class="bg-slate-50 p-4 pt-20 flex flex-col items-center">
+    <div class="scrolling-container"><div class="scrolling-text">${topic} • Prepared By Mr. Katongo • ${topic}</div></div>
+    <div class="max-w-2xl w-full">
+        <h1 class="text-3xl font-bold text-center mb-8">${topic}</h1>
+        <div id="quiz-box" class="bg-white p-8 rounded-xl shadow-xl border border-slate-200">
+            <p id="progress" class="text-indigo-600 font-bold mb-2"></p>
+            <h2 id="q-text" class="text-xl font-bold mb-6"></h2>
+            <div id="options" class="space-y-3"></div>
+            <div class="flex justify-between items-center mt-8">
+                <p id="hint" class="italic text-slate-400 text-sm"></p>
+                <button id="nextBtn" disabled class="bg-indigo-600 text-white px-6 py-2 rounded-full opacity-50">Next</button>
+            </div>
+        </div>
+        <div id="results" class="hidden bg-white p-8 rounded-xl shadow-xl text-center">
+            <h2 class="text-3xl font-bold mb-4">Quiz Complete!</h2>
+            <p class="text-5xl font-black text-indigo-600 mb-2"><span id="score"></span>%</p>
+            <p id="feedback" class="font-bold text-xl mb-6"></p>
+            <button onclick="location.reload()" class="bg-slate-800 text-white px-8 py-3 rounded-lg">Restart</button>
+        </div>
+    </div>
+    <footer class="mt-10 mb-10"><div class="rotating-text bg-white p-4 rounded-full shadow border font-bold text-indigo-600">Prepared By Mr. Katongo</div></footer>
+    <script>
+        const data = ${JSON.stringify(questionsArray)};
+        let cur = 0, score = 0;
+        function show() {
+            const q = data[cur];
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('nextBtn').classList.add('opacity-50');
+            document.getElementById('progress').innerText = "Question " + (cur+1) + " of " + data.length;
+            document.getElementById('q-text').innerText = q.question;
+            document.getElementById('hint').innerText = "Hint: " + q.hint;
+            const optDiv = document.getElementById('options');
+            optDiv.innerHTML = '';
+            q.answerOptions.forEach((o, i) => {
+                const b = document.createElement('button');
+                b.className = "w-full text-left p-4 border-2 rounded-lg transition hover:bg-slate-50";
+                b.innerText = o.text;
+                b.onclick = () => {
+                    Array.from(optDiv.children).forEach(c => c.classList.remove('selected', 'border-indigo-600'));
+                    b.classList.add('selected', 'border-indigo-600');
+                    b.dataset.correct = o.isCorrect;
+                    document.getElementById('nextBtn').disabled = false;
+                    document.getElementById('nextBtn').classList.remove('opacity-50');
+                };
+                optDiv.appendChild(b);
             });
         }
-
-        document.getElementById('nextButton').onclick = () => {
-            const selIdx = document.querySelector('.selected').dataset.idx;
-            const q = questions[currentIdx];
-            const sel = q.answerOptions[selIdx];
-            if (sel.isCorrect) score++;
-            responses.push({ ...q, userText: sel.text, isUserCorrect: sel.isCorrect, correctText: q.answerOptions.find(o=>o.isCorrect).text });
-            
-            currentIdx++;
-            if (currentIdx < 10) showQ(); else end();
+        document.getElementById('nextBtn').onclick = () => {
+            if(document.querySelector('.selected').dataset.correct === "true") score++;
+            cur++;
+            if(cur < data.length) show();
+            else {
+                document.getElementById('quiz-box').classList.add('hidden');
+                document.getElementById('results').classList.remove('hidden');
+                const pct = Math.round((score/data.length)*100);
+                document.getElementById('score').innerText = pct;
+                document.getElementById('feedback').innerText = pct >= 50 ? "PASSED" : "FAILED";
+            }
         };
+        show();
+    <\/script>
+</body>
+</html>`;
 
-        function end() {
-            clearInterval(timerInt);
-            document.getElementById('questionView').classList.add('hidden');
-            document.getElementById('resultsView').classList.remove('hidden');
-            const pct = Math.round((score / 10) * 100);
-            document.getElementById('finalScore').textContent = score;
-            document.getElementById('finalPercentage').textContent = pct;
-            
-            const status = document.getElementById('passStatus');
-            if(pct >= 50) { status.textContent = "Great Job! You Passed"; status.className = "mt-2 text-green-600 font-bold text-xl"; }
-            else { status.textContent = "Study Required: You Failed"; status.className = "mt-2 text-red-600 font-bold text-xl"; }
-
-            const rev = document.getElementById('reviewContainer');
-            responses.forEach((r, i) => {
-                const d = document.createElement('div');
-                d.className = `p-3 rounded border-l-4 ${r.isUserCorrect ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}`;
-                d.innerHTML = `<strong>${i+1}. ${r.question}</strong><br>
-                               <span class="text-sm">Correct: ${r.correctText}</span><br>
-                               <span class="text-xs italic">${r.isUserCorrect ? 'Well done!' : 'You picked: ' + r.userText}</span>`;
-                rev.appendChild(d);
-            });
+            const blob = new Blob([fullHTML], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${topic.replace(/\s+/g, '_')}_Quiz.html`;
+            a.click();
         }
 
-        document.getElementById('restartButton').onclick = () => location.reload();
+        // Initialize with one question
+        addQuestion();
     </script>
 </body>
 </html>
