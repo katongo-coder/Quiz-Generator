@@ -9,46 +9,53 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
         .config-card { background: white; border-radius: 1rem; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        
+        @keyframes scrollText { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .preview-scroll { overflow: hidden; white-space: nowrap; background: #4f46e5; color: white; padding: 8px 0; border-radius: 8px; }
+        .preview-text { display: inline-block; animation: scrollText 10s linear infinite; font-size: 14px; font-weight: bold; text-transform: uppercase; }
     </style>
 </head>
 <body class="p-4 md:p-10">
 
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-5xl mx-auto">
         <header class="text-center mb-10">
-            <h1 class="text-4xl font-extrabold text-indigo-800">Quiz Architect</h1>
-            <p class="text-slate-600">Create custom ICT quizzes in the "Mr. Katongo" style instantly.</p>
+            <h1 class="text-4xl font-extrabold text-indigo-800">Quiz Architect + Review</h1>
+            <p class="text-slate-600">The <b>"Add Question"</b> button is now functional. Export to create your final quiz.</p>
         </header>
 
-        <div class="config-card p-6 md:p-8">
-            <div class="grid grid-cols-1 gap-6">
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">Quiz Topic</label>
-                    <input type="text" id="topicInput" placeholder="e.g. Computer Storage Devices" 
-                           class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="config-card p-6 h-fit border-l-4 border-indigo-500">
+                <h2 class="font-bold text-slate-800 mb-4 text-lg">Quick Guide</h2>
+                <ul class="text-sm text-slate-600 space-y-4">
+                    <li><span class="font-bold text-indigo-600">1.</span> Enter your topic name.</li>
+                    <li><span class="font-bold text-indigo-600">2.</span> The <b>top box</b> is for the correct answer.</li>
+                    <li><span class="font-bold text-indigo-600">3.</span> Add a <b>Rationale</b> to help students learn during the review.</li>
+                </ul>
+                <div class="mt-8">
+                    <label class="block text-xs font-bold text-slate-400 mb-2 uppercase">Scrolling Header Sync</label>
+                    <div class="preview-scroll"><div class="preview-text">Prepared By Mr. Katongo</div></div>
                 </div>
+            </div>
 
-                <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-2">Primary Color Theme</label>
-                    <select id="colorTheme" class="w-full p-3 border border-slate-300 rounded-lg">
-                        <option value="indigo">Indigo (Default)</option>
-                        <option value="emerald">Emerald Green (Input/Output)</option>
-                        <option value="rose">Rose Red (History)</option>
-                        <option value="amber">Amber Gold (Storage)</option>
-                        <option value="sky">Sky Blue (Software)</option>
-                    </select>
-                </div>
-
-                <div id="questionsList" class="space-y-4">
-                    <h3 class="font-bold text-slate-800 border-b pb-2">Questions</h3>
+            <div class="md:col-span-2 config-card p-6 md:p-8">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Quiz Topic</label>
+                        <input type="text" id="topicInput" placeholder="e.g. Components of a Computer" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
                     </div>
 
-                <button onclick="addQuestion()" class="text-indigo-600 font-semibold hover:text-indigo-800 transition">+ Add New Question</button>
+                    <div id="questionsList" class="space-y-6">
+                        </div>
 
-                <hr class="my-4">
-
-                <button onclick="generateQuizCode()" class="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition">
-                    BUILD & DOWNLOAD QUIZ FILE
-                </button>
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <button type="button" onclick="addQuestion()" class="flex-1 bg-indigo-50 text-indigo-600 font-bold py-4 rounded-xl hover:bg-indigo-100 transition border-2 border-indigo-200">
+                            + ADD QUESTION
+                        </button>
+                        <button type="button" onclick="generateQuizCode()" class="flex-1 bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition">
+                            EXPORT COMPLETED QUIZ
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -56,133 +63,195 @@
     <script>
         let questionCount = 0;
 
+        // Function to add a new question block
         function addQuestion() {
             questionCount++;
-            const div = document.createElement('div');
-            div.className = "p-4 bg-slate-50 rounded-lg border border-slate-200 relative";
-            div.id = `q-block-${questionCount}`;
-            div.innerHTML = `
-                <button onclick="this.parentElement.remove()" class="absolute top-2 right-2 text-red-500 text-sm">Remove</button>
-                <input type="text" placeholder="Enter Question ${questionCount}" class="q-text w-full p-2 mb-2 border rounded">
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" placeholder="Correct Answer" class="q-correct w-full p-2 border rounded bg-green-50">
-                    <input type="text" placeholder="Wrong Option 1" class="q-wrong w-full p-2 border rounded">
-                    <input type="text" placeholder="Wrong Option 2" class="q-wrong w-full p-2 border rounded">
-                    <input type="text" placeholder="Wrong Option 3" class="q-wrong w-full p-2 border rounded">
+            const questionsContainer = document.getElementById('questionsList');
+            const questionDiv = document.createElement('div');
+            questionDiv.className = "p-6 bg-slate-50 rounded-2xl border-2 border-slate-200 relative";
+            questionDiv.id = `q-block-${questionCount}`;
+            
+            questionDiv.innerHTML = `
+                <button onclick="this.parentElement.remove()" class="absolute top-4 right-4 text-red-500 font-bold text-xs hover:underline">REMOVE</button>
+                <label class="block text-xs font-black text-indigo-500 mb-2 uppercase">Question #${questionCount}</label>
+                <input type="text" placeholder="Enter Question Here" class="q-text w-full p-3 mb-4 border rounded-xl font-bold text-slate-700">
+                
+                <div class="space-y-2">
+                    <input type="text" placeholder="CORRECT ANSWER" class="q-correct w-full p-2 border-2 border-green-200 rounded-lg bg-green-50">
+                    <input type="text" placeholder="Wrong Option 1" class="q-wrong w-full p-2 border border-slate-300 rounded-lg">
+                    <input type="text" placeholder="Wrong Option 2" class="q-wrong w-full p-2 border border-slate-300 rounded-lg">
+                    <input type="text" placeholder="Wrong Option 3" class="q-wrong w-full p-2 border border-slate-300 rounded-lg">
                 </div>
-                <input type="text" placeholder="Hint" class="q-hint w-full p-2 mt-2 border rounded italic text-sm">
+                
+                <textarea placeholder="Rationale: Explain why the answer is correct (for the review section)..." class="q-rationale w-full p-3 mt-4 border border-indigo-100 rounded-xl text-sm bg-white italic"></textarea>
             `;
-            document.getElementById('questionsList').appendChild(div);
+            questionsContainer.appendChild(questionDiv);
+            
+            // Scroll to the new question
+            questionDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         function generateQuizCode() {
-            const topic = document.getElementById('topicInput').value || "ICT Quiz";
-            const theme = document.getElementById('colorTheme').value;
+            const topic = document.getElementById('topicInput').value || "ICT Assessment";
             const blocks = document.querySelectorAll('[id^="q-block-"]');
             
+            if (blocks.length === 0) {
+                alert("Please add at least one question before exporting!");
+                return;
+            }
+
             const questionsArray = Array.from(blocks).map(block => {
                 const correct = block.querySelector('.q-correct').value;
                 const wrongs = Array.from(block.querySelectorAll('.q-wrong')).map(i => i.value);
+                const rationale = block.querySelector('.q-rationale').value || "Standard ICT concept.";
+                
                 const options = [
-                    { text: correct, isCorrect: true, rationale: "Correct choice." },
-                    ...wrongs.map(w => ({ text: w, isCorrect: false, rationale: "Incorrect choice." }))
+                    { text: correct, isCorrect: true },
+                    ...wrongs.filter(w => w.trim() !== "").map(w => ({ text: w, isCorrect: false }))
                 ].sort(() => Math.random() - 0.5);
 
                 return {
                     question: block.querySelector('.q-text').value,
-                    hint: block.querySelector('.q-hint').value,
+                    correctText: correct,
+                    rationale: rationale,
                     answerOptions: options
                 };
             });
 
-            const fullHTML = `
+            const finalFileHTML = `
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>${topic}</title>
     <script src="https://cdn.tailwindcss.com"><\/script>
     <style>
         @keyframes scrollText { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        .scrolling-container { width: 100%; overflow: hidden; background: ${theme === 'indigo' ? '#4f46e5' : theme}; color: white; padding: 8px 0; position: fixed; top: 0; z-index: 50; white-space: nowrap; }
-        .scrolling-text { display: inline-block; animation: scrollText 15s linear infinite; font-weight: 800; }
+        .scrolling-container { width: 100%; overflow: hidden; background: #4f46e5; color: white; padding: 12px 0; position: fixed; top: 0; left:0; z-index: 50; white-space: nowrap; }
+        .scrolling-text { display: inline-block; animation: scrollText 15s linear infinite; font-weight: 800; text-transform: uppercase; }
         @keyframes rotateTitle { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .rotating-section { display: flex; justify-content: center; margin-top: 3rem; margin-bottom: 2rem; }
         .rotating-text { display: inline-block; animation: rotateTitle 15s linear infinite; transform-origin: center; }
-        .selected { border-color: #4f46e5; background-color: #f5f3ff; }
+        .selected { border-color: #4f46e5 !important; background-color: #f5f3ff !important; }
     </style>
 </head>
-<body class="bg-slate-50 p-4 pt-20 flex flex-col items-center">
-    <div class="scrolling-container"><div class="scrolling-text">${topic} • Prepared By Mr. Katongo • ${topic}</div></div>
-    <div class="max-w-2xl w-full">
-        <h1 class="text-3xl font-bold text-center mb-8">${topic}</h1>
-        <div id="quiz-box" class="bg-white p-8 rounded-xl shadow-xl border border-slate-200">
-            <p id="progress" class="text-indigo-600 font-bold mb-2"></p>
-            <h2 id="q-text" class="text-xl font-bold mb-6"></h2>
-            <div id="options" class="space-y-3"></div>
-            <div class="flex justify-between items-center mt-8">
-                <p id="hint" class="italic text-slate-400 text-sm"></p>
-                <button id="nextBtn" disabled class="bg-indigo-600 text-white px-6 py-2 rounded-full opacity-50">Next</button>
+<body class="bg-slate-50 p-4 pt-24 min-h-screen flex flex-col items-center">
+    <div class="scrolling-container">
+        <div class="scrolling-text">Prepared By Mr. Katongo • ${topic} • Prepared By Mr. Katongo • ${topic}</div>
+    </div>
+    
+    <div class="max-w-3xl w-full">
+        <div id="quiz-box" class="bg-white p-8 rounded-3xl shadow-2xl border border-slate-200">
+            <p id="progress" class="text-indigo-600 font-black mb-2 text-sm uppercase"></p>
+            <h2 id="q-text" class="text-2xl font-bold text-slate-800 mb-8 leading-tight"></h2>
+            <div id="options" class="space-y-4"></div>
+            <div class="mt-8 pt-6 border-t flex justify-end">
+                <button id="nextBtn" disabled class="bg-indigo-600 text-white px-12 py-4 rounded-2xl font-bold shadow-lg disabled:opacity-30">NEXT</button>
             </div>
         </div>
-        <div id="results" class="hidden bg-white p-8 rounded-xl shadow-xl text-center">
-            <h2 class="text-3xl font-bold mb-4">Quiz Complete!</h2>
-            <p class="text-5xl font-black text-indigo-600 mb-2"><span id="score"></span>%</p>
-            <p id="feedback" class="font-bold text-xl mb-6"></p>
-            <button onclick="location.reload()" class="bg-slate-800 text-white px-8 py-3 rounded-lg">Restart</button>
+
+        <div id="results" class="hidden space-y-8">
+            <div class="bg-white p-10 rounded-3xl shadow-2xl text-center border-b-8 border-indigo-500">
+                <h2 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Results</h2>
+                <div class="my-6 p-8 bg-indigo-50 rounded-3xl">
+                    <p class="text-8xl font-black text-indigo-600"><span id="score"></span>%</p>
+                    <p id="feedback" class="font-bold text-xl uppercase mt-2"></p>
+                </div>
+                <button onclick="location.reload()" class="bg-slate-800 text-white px-12 py-4 rounded-xl font-bold uppercase">Restart</button>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-200">
+                <h3 class="text-2xl font-black text-slate-800 mb-6 border-b pb-4">Detailed Review</h3>
+                <div id="review-list" class="space-y-6"></div>
+            </div>
         </div>
     </div>
-    <footer class="mt-10 mb-10"><div class="rotating-text bg-white p-4 rounded-full shadow border font-bold text-indigo-600">Prepared By Mr. Katongo</div></footer>
+
+    <footer class="rotating-section">
+        <div class="rotating-text bg-white px-6 py-3 rounded-full shadow-lg border-2 border-indigo-100 font-black text-indigo-600">
+            Prepared By Mr. Katongo
+        </div>
+    </footer>
+
     <script>
         const data = ${JSON.stringify(questionsArray)};
-        let cur = 0, score = 0;
+        let cur = 0, score = 0, history = [];
+
         function show() {
             const q = data[cur];
             document.getElementById('nextBtn').disabled = true;
-            document.getElementById('nextBtn').classList.add('opacity-50');
-            document.getElementById('progress').innerText = "Question " + (cur+1) + " of " + data.length;
+            document.getElementById('progress').innerText = "Question " + (cur+1) + " / " + data.length;
             document.getElementById('q-text').innerText = q.question;
-            document.getElementById('hint').innerText = "Hint: " + q.hint;
             const optDiv = document.getElementById('options');
             optDiv.innerHTML = '';
-            q.answerOptions.forEach((o, i) => {
+            q.answerOptions.forEach((o) => {
                 const b = document.createElement('button');
-                b.className = "w-full text-left p-4 border-2 rounded-lg transition hover:bg-slate-50";
+                b.className = "w-full text-left p-5 border-2 border-slate-200 rounded-2xl font-semibold transition hover:bg-slate-50";
                 b.innerText = o.text;
                 b.onclick = () => {
-                    Array.from(optDiv.children).forEach(c => c.classList.remove('selected', 'border-indigo-600'));
-                    b.classList.add('selected', 'border-indigo-600');
+                    Array.from(optDiv.children).forEach(c => c.classList.remove('selected'));
+                    b.classList.add('selected');
                     b.dataset.correct = o.isCorrect;
+                    b.dataset.text = o.text;
                     document.getElementById('nextBtn').disabled = false;
-                    document.getElementById('nextBtn').classList.remove('opacity-50');
                 };
                 optDiv.appendChild(b);
             });
         }
+
         document.getElementById('nextBtn').onclick = () => {
-            if(document.querySelector('.selected').dataset.correct === "true") score++;
+            const sel = document.querySelector('.selected');
+            const isCorrect = sel.dataset.correct === "true";
+            if(isCorrect) score++;
+            
+            history.push({
+                question: data[cur].question,
+                userChoice: sel.dataset.text,
+                correctChoice: data[cur].correctText,
+                rationale: data[cur].rationale,
+                isCorrect: isCorrect
+            });
+
             cur++;
-            if(cur < data.length) show();
-            else {
-                document.getElementById('quiz-box').classList.add('hidden');
-                document.getElementById('results').classList.remove('hidden');
-                const pct = Math.round((score/data.length)*100);
-                document.getElementById('score').innerText = pct;
-                document.getElementById('feedback').innerText = pct >= 50 ? "PASSED" : "FAILED";
-            }
+            if(cur < data.length) show(); else finish();
         };
+
+        function finish() {
+            document.getElementById('quiz-box').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            const pct = Math.round((score/data.length)*100);
+            document.getElementById('score').innerText = pct;
+            document.getElementById('feedback').innerText = pct >= 50 ? "PASSED" : "RETAKE RECOMMENDED";
+            
+            const list = document.getElementById('review-list');
+            history.forEach((ans, i) => {
+                const d = document.createElement('div');
+                d.className = "p-6 rounded-2xl border-l-8 " + (ans.isCorrect ? "border-green-500 bg-green-50" : "border-red-500 bg-red-50");
+                d.innerHTML = \`
+                    <p class="font-bold text-slate-800">\${i+1}. \${ans.question}</p>
+                    <p class="text-sm mt-3"><b>Your Answer:</b> \${ans.userChoice} \${ans.isCorrect ? '✅' : '❌'}</p>
+                    \${!ans.isCorrect ? \`<p class="text-sm text-green-700"><b>Correct Answer:</b> \${ans.correctChoice}</p>\` : ''}
+                    <div class="mt-4 p-4 bg-white/60 rounded-xl text-xs text-slate-600 border border-slate-100">
+                        <b class="uppercase text-indigo-500">Why?</b><br>\${ans.rationale}
+                    </div>
+                \`;
+                list.appendChild(d);
+            });
+        }
         show();
     <\/script>
 </body>
 </html>`;
 
-            const blob = new Blob([fullHTML], { type: 'text/html' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `${topic.replace(/\s+/g, '_')}_Quiz.html`;
-            a.click();
+            const blob = new Blob([finalFileHTML], { type: 'text/html' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${topic.replace(/\s+/g, '_')}_Quiz.html`;
+            link.click();
         }
 
-        // Initialize with one question
-        addQuestion();
+        // Add the first question block automatically when page loads
+        window.onload = addQuestion;
     </script>
 </body>
 </html>
