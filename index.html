@@ -19,22 +19,23 @@
 
     <div class="max-w-5xl mx-auto">
         <header class="text-center mb-10">
-            <h1 class="text-4xl font-extrabold text-indigo-900 tracking-tight">Master Quiz Architect</h1>
-            <p class="text-slate-600 font-medium mt-2">Generate advanced ICT quizzes with Attempt Counters & Time Tracking.</p>
+            <h1 class="text-4xl font-extrabold text-indigo-900 tracking-tight uppercase">Master Quiz Architect</h1>
+            <p class="text-slate-600 font-bold mt-2">Professional Generator for Mr. Katongo</p>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="config-card p-6 h-fit border-l-8 border-indigo-600">
                 <h2 class="font-bold text-slate-800 mb-4 text-lg underline decoration-indigo-200">Standard Features</h2>
-                <ul class="text-sm text-slate-600 space-y-4">
+                <ul class="text-sm text-slate-600 space-y-4 font-bold">
+                    <li class="flex gap-2 text-indigo-600">✅ <b>Printable Report:</b> PDF-ready layout.</li>
                     <li class="flex gap-2">✅ <b>Student Tracking:</b> Logs Name & ID.</li>
-                    <li class="flex gap-2">✅ <b>Attempt Counter:</b> Increments on every retake.</li>
-                    <li class="flex gap-2">✅ <b>Time Tracking:</b> Records time taken per attempt.</li>
-                    <li class="flex gap-2">✅ <b>Detailed Review:</b> Includes "Katongo's Rationale".</li>
+                    <li class="flex gap-2">✅ <b>Attempt Counter:</b> Auto-increments.</li>
+                    <li class="flex gap-2">✅ <b>Time Tracking:</b> Real-time records.</li>
+                    <li class="flex gap-2">✅ <b>Review:</b> Includes rationale.</li>
                 </ul>
                 <div class="mt-10 pt-6 border-t">
                     <label class="block text-xs font-black text-slate-400 mb-2 uppercase">Signature Preview</label>
-                    <div class="preview-scroll"><div class="preview-text">Prepared By Mr. Katongo</div></div>
+                    <div class="preview-scroll"><div class="preview-text"> Prepared By Mr. Katongo </div></div>
                 </div>
             </div>
 
@@ -42,11 +43,10 @@
                 <div class="space-y-8">
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">Quiz Topic Name</label>
-                        <input type="text" id="topicInput" placeholder="e.g., Computer Hardware & Peripherals" class="w-full p-4 border-2 border-slate-100 rounded-2xl focus:border-indigo-500 outline-none transition">
+                        <input type="text" id="topicInput" placeholder="e.g., Input and Output Devices" class="w-full p-4 border-2 border-slate-100 rounded-2xl focus:border-indigo-500 outline-none transition font-bold">
                     </div>
 
-                    <div id="questionsList" class="space-y-6">
-                        </div>
+                    <div id="questionsList" class="space-y-6"></div>
 
                     <div class="flex flex-col sm:flex-row gap-4 pt-6">
                         <button type="button" onclick="addQuestion()" class="flex-1 bg-indigo-50 text-indigo-700 font-black py-4 rounded-2xl hover:bg-indigo-100 transition border-2 border-indigo-100 uppercase tracking-widest text-sm">
@@ -77,7 +77,7 @@
                 <input type="text" placeholder="Question text..." class="q-text w-full p-4 mb-4 border rounded-2xl font-bold text-slate-700 shadow-sm">
                 
                 <div class="space-y-3">
-                    <input type="text" placeholder="CORRECT ANSWER" class="q-correct w-full p-3 border-2 border-green-200 rounded-xl bg-green-50 placeholder-green-600">
+                    <input type="text" placeholder="CORRECT ANSWER" class="q-correct w-full p-3 border-2 border-green-200 rounded-xl bg-green-50 placeholder-green-600 font-bold">
                     <input type="text" placeholder="Wrong Option 1" class="q-wrong w-full p-3 border border-slate-200 rounded-xl bg-white">
                     <input type="text" placeholder="Wrong Option 2" class="q-wrong w-full p-3 border border-slate-200 rounded-xl bg-white">
                     <input type="text" placeholder="Wrong Option 3" class="q-wrong w-full p-3 border border-slate-200 rounded-xl bg-white">
@@ -104,12 +104,11 @@
                 return { question: block.querySelector('.q-text').value, correctText: correct, rationale: rationale, answerOptions: options };
             });
 
-            const template = `
-<!DOCTYPE html>
+            const template = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>${topic}</title>
+    <title>${topic} - Mr. Katongo</title>
     <script src="https://cdn.tailwindcss.com"><\/script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
@@ -121,20 +120,26 @@
         .rotating-section { display: flex; justify-content: center; margin-top: 3rem; margin-bottom: 2rem; }
         .rotating-text { display: inline-block; animation: rotateTitle 15s linear infinite; transform-origin: center; }
         .selected { border-color: #4f46e5 !important; background-color: #f5f3ff !important; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; padding: 0 !important; }
+            .print-card { box-shadow: none !important; border: 1px solid #e2e8f0 !important; border-radius: 0 !important; }
+            .scrolling-container, .rotating-section { display: none !important; }
+        }
     </style>
 </head>
 <body class="p-4 pt-24 min-h-screen flex flex-col items-center">
-    <div class="scrolling-container"><div class="scrolling-text">Prepared By Mr. Katongo • ${topic} • Knowledge is Power • ${topic}</div></div>
+    <div class="scrolling-container no-print"><div class="scrolling-text">Prepared By Mr. Katongo • ${topic} • Knowledge Is Power • ${topic} • Mr. Katongo</div></div>
     
     <div class="max-w-3xl w-full">
-        <div id="reg-box" class="bg-white p-10 rounded-[40px] shadow-2xl border border-indigo-50">
+        <div id="reg-box" class="bg-white p-10 rounded-[40px] shadow-2xl border border-indigo-50 no-print">
             <h2 class="text-2xl font-black text-indigo-900 mb-6 uppercase">Student Registration</h2>
             <input type="text" id="sName" placeholder="Enter Full Name" class="w-full p-4 mb-4 border rounded-2xl outline-none focus:ring-4 focus:ring-indigo-100 transition">
             <input type="text" id="sId" placeholder="Enter Student ID" class="w-full p-4 mb-6 border rounded-2xl outline-none focus:ring-4 focus:ring-indigo-100 transition">
             <button onclick="start()" id="startB" disabled class="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black opacity-30 shadow-lg uppercase tracking-widest">Begin Assessment</button>
         </div>
 
-        <div id="quiz-box" class="hidden bg-white p-10 rounded-[40px] shadow-2xl border border-indigo-50">
+        <div id="quiz-box" class="hidden bg-white p-10 rounded-[40px] shadow-2xl border border-indigo-50 no-print">
             <div class="flex justify-between items-center mb-8 border-b pb-4">
                 <div class="bg-indigo-50 px-4 py-2 rounded-full border border-indigo-100"><span id="timer" class="font-black text-indigo-700">00:00</span></div>
                 <span id="prog" class="text-xs font-black text-slate-400 uppercase tracking-widest"></span>
@@ -142,34 +147,42 @@
             <h2 id="qText" class="text-2xl font-bold text-slate-800 mb-10 leading-tight"></h2>
             <div id="opts" class="space-y-4"></div>
             <div class="flex justify-end mt-10">
-                <button id="nextB" disabled class="bg-indigo-600 text-white px-12 py-4 rounded-2xl font-black shadow-lg disabled:opacity-20 uppercase tracking-widest">Next</button>
+                <button id="nextB" disabled class="bg-indigo-600 text-white px-12 py-4 rounded-2xl font-black shadow-lg disabled:opacity-20 uppercase tracking-widest">Next Question</button>
             </div>
         </div>
 
         <div id="res-box" class="hidden space-y-8">
-            <div class="bg-white p-10 rounded-[40px] shadow-2xl border-b-[12px] border-indigo-600">
-                <h2 class="text-2xl font-black text-slate-800 text-center uppercase mb-6 tracking-widest underline decoration-indigo-200 decoration-4">Performance Report</h2>
+            <div class="bg-white p-10 rounded-[40px] shadow-2xl border-b-[12px] border-indigo-600 print-card">
+                <h2 class="text-3xl font-black text-slate-800 text-center uppercase mb-1 tracking-tight">Official Report</h2>
+                <p class="text-center font-black text-indigo-600 uppercase tracking-[0.2em] text-[10px] mb-8">Approved by Mr. Katongo</p>
+                
                 <div class="grid grid-cols-2 gap-4 mb-8 bg-slate-50 p-6 rounded-3xl border border-indigo-50">
-                    <div><p class="text-[10px] font-black text-slate-400 uppercase">Student</p><p id="rn" class="font-bold text-slate-800"></p></div>
-                    <div><p class="text-[10px] font-black text-slate-400 uppercase">ID Number</p><p id="ri" class="font-bold text-slate-800"></p></div>
-                    <div class="mt-2"><p class="text-[10px] font-black text-slate-400 uppercase">Attempt No.</p><p id="ra" class="font-bold text-indigo-600"></p></div>
-                    <div class="mt-2"><p class="text-[10px] font-black text-slate-400 uppercase">Time Elapsed</p><p id="rt" class="font-bold text-slate-800"></p></div>
+                    <div><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Student</p><p id="rn" class="font-black text-slate-800 text-lg"></p></div>
+                    <div><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">ID Number</p><p id="ri" class="font-black text-slate-800 text-lg"></p></div>
+                    <div class="mt-2"><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Attempt</p><p id="ra" class="font-black text-indigo-600"></p></div>
+                    <div class="mt-2"><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Time</p><p id="rt" class="font-black text-slate-800"></p></div>
                 </div>
                 <div class="text-center py-4">
                     <p class="text-7xl font-black text-indigo-600 mb-2"><span id="pct"></span>%</p>
-                    <p class="text-xl font-bold text-slate-700 uppercase">Score: <span id="raw"></span></p>
+                    <p class="text-xl font-bold text-slate-700 uppercase">Total Marks: <span id="raw"></span></p>
                     <p id="grade" class="mt-6 inline-block px-8 py-2 rounded-full font-black text-sm uppercase tracking-widest"></p>
                 </div>
-                <div class="flex justify-center mt-10"><button onclick="restart()" class="bg-slate-800 text-white px-16 py-4 rounded-2xl font-black uppercase tracking-widest shadow-xl">Retake Quiz</button></div>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-10 no-print">
+                    <button onclick="window.print()" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest shadow-xl">Print Report / PDF</button>
+                    <button onclick="restart()" class="bg-slate-800 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest shadow-xl">Retake Quiz</button>
+                </div>
             </div>
-            <div class="bg-white p-10 rounded-[40px] shadow-xl border border-indigo-50">
-                <h3 class="text-xl font-black text-slate-800 mb-8 border-b pb-4">Detailed Review</h3>
+            <div class="bg-white p-10 rounded-[40px] shadow-xl border border-indigo-50 print-card">
+                <h3 class="text-xl font-black text-slate-800 mb-8 border-b pb-4">Performance Review</h3>
                 <div id="revList" class="space-y-6"></div>
+                <div class="mt-12 pt-8 border-t text-center">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Prepared by Mr. Katongo</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <footer class="rotating-section"><div class="rotating-text bg-white px-10 py-5 rounded-full shadow-lg border-2 border-indigo-50 font-black text-indigo-700 uppercase text-xs tracking-widest">Prepared By Mr. Katongo</div></footer>
+    <footer class="rotating-section no-print"><div class="rotating-text bg-white px-10 py-5 rounded-full shadow-lg border-2 border-indigo-50 font-black text-indigo-700 uppercase text-xs tracking-widest">Prepared By Mr. Katongo</div></footer>
 
     <script>
         const data = ${JSON.stringify(questionsArray)};
@@ -234,21 +247,20 @@
             const list = document.getElementById('revList'); list.innerHTML = '';
             history.forEach((h, i) => {
                 const d = document.createElement('div');
-                d.className = \`p-6 rounded-[30px] border-l-[10px] \${h.isC ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}\`;
+                d.className = \`p-6 rounded-[30px] border-l-[10px] mb-4 \${h.isC ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'}\`;
                 d.innerHTML = \`
                     <p class="font-black text-slate-800">\${i+1}. \${h.q}</p>
-                    <p class="text-xs mt-3"><b>Choice:</b> \${h.u} \${h.isC?'✅':'❌'}</p>
+                    <p class="text-xs mt-3"><b>Your Choice:</b> \${h.u} \${h.isC?'✅':'❌'}</p>
                     \${!h.isC ? \`<p class="text-xs text-green-700"><b>Correct:</b> \${h.c}</p>\` : ''}
-                    <div class="mt-4 p-4 bg-white/60 rounded-2xl text-[11px] text-slate-600 border border-slate-100 italic">
-                        <b class="text-indigo-600 uppercase tracking-widest block mb-1">Mr. Katongo's Rationale:</b>\${h.r}
+                    <div class="mt-4 p-4 bg-white/60 rounded-2xl text-[10px] text-slate-600 border border-slate-100 italic">
+                        <b class="text-indigo-600 uppercase tracking-widest block mb-1">Mr.katongo's Rationale:</b>\${h.r}
                     </div>\`;
                 list.appendChild(d);
             });
         }
 
         function restart() {
-            attempts++;
-            cur = 0; score = 0; history = []; t = 0;
+            attempts++; cur = 0; score = 0; history = []; t = 0;
             document.getElementById('timer').innerText = "00:00";
             document.getElementById('res-box').classList.add('hidden');
             document.getElementById('quiz-box').classList.remove('hidden');
@@ -269,4 +281,4 @@
         window.onload = addQuestion;
     </script>
 </body>
-</html>
+    </html>
